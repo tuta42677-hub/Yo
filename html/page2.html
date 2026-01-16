@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Вторая страница проекта по информатике</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0e0e0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            color: black;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: black;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        p {
+            font-size: 1.8em;
+            color: black;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .button-container a {
+            margin-bottom: 10px;
+        }
+        .my-button {
+            background-color: #4286f4;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        /* Стили для изображения внизу */
+        .bottom-image-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .bottom-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        /* Стиль для поля ввода и кнопки */
+        .input-container {
+            margin-bottom: 20px;
+        }
+        #message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Чем опасны сайты?</h1>
+        <p>конечно, это текстовыми полями, гиперссылками, даже в изображении может быть опасность</p>
+
+        <div class="input-container">
+            <label for="userText">Введите текст:</label>
+            <input type="text" id="userText" name="userText">
+            <button onclick="sendTextToServer()">Отправить на сервер</button>
+            <div id="message"></div> <!-- Здесь будет отображаться сообщение -->
+        </div>
+
+        <div class="button-container">
+            <a href="index.html">
+                <button class="my-button">Вернуться на главную страницу</button>
+                            </a>
+            <a href="https://www.ivpek.ru" target="_blank">
+                <button class="my-button">Перейти на Сайт ИВПЕК</button>
+            </a>
+           <a href="page3.html">  <!-- Добавлена ссылка на страницу 3 -->
+                <button class="my-button">Перейти на страницу 3</button>
+            </a>
+        </div>
+
+        <!-- Контейнер для изображения внизу -->
+        <div class="bottom-image-container">
+            <img src="images/RickrollingQRcode.png" alt="Шпион ФСБ" class="bottom-image">
+        </div>
+    </div>
+
+    <script>
+        function sendTextToServer() {
+            let text = document.getElementById("userText").value;
+            let messageDiv = document.getElementById("message"); // Получаем элемент для сообщения
+
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => {
+                if (response.ok) {
+                    messageDiv.textContent = 'Текст успешно отправлен на сервер.'; // Выводим сообщение об успехе
+                    messageDiv.style.color = 'green'; // Делаем сообщение зеленым
+                } else {
+                    messageDiv.textContent = 'Ошибка при отправке текста на сервер.'; // Выводим сообщение об ошибке
+                    messageDiv.style.color = 'red'; // Делаем сообщение красным
+                    console.error('Ошибка при отправке текста на сервер.');
+                }
+            })
+            .catch(error => {
+                messageDiv.textContent = 'Ошибка сети: ' + error; // Выводим сообщение об ошибке сети
+                messageDiv.style.color = 'red'; // Делаем сообщение красным
+                console.error('Ошибка сети:', error);
+            });
+        }
+    </script>
+</body>
+</html>

